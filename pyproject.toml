@@ -16,8 +16,8 @@ psycopg2-binary = "^2.9.7"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
-mypy = "^1.5.1"
-django-stubs = {extras = ["compatible-mypy"], version = "^4.2.4"}
+django-stubs = {version = "4.2.3", extras = ["compatible-mypy"]}
+djangorestframework-stubs = {extras = ["compatible-mypy"], version = "^3.14.2"}
 
 [build-system]
 requires = ["poetry-core"]
