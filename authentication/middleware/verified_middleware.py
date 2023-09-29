@@ -7,6 +7,16 @@ class EmailVerificationError(Exception):
 
 
 def verified_middleware(get_response):
+    """
+    Middleware that checks if the user has verified their email address before allowing access to certain views.
+
+    Args:
+        get_response (callable): A function that takes a request and returns a response.
+
+    Returns:
+        callable: A function that takes a request and returns a response.
+    """
+
     def middleware(request: HttpRequest):
         excluded_paths = [
             "/api/auth/verify-otp/",

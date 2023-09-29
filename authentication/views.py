@@ -59,6 +59,15 @@ class VerifyOtpView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request: Request) -> Response:
+        """
+        Verifies the OTP sent to the user
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object containing the success message.
+        """
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = User.objects.filter(pk=request.user.id).first()
@@ -82,6 +91,15 @@ class ResendOtpView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request: Request) -> Request:
+        """
+        Resends the OTP to the user's email for verification
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object containing the success message.
+        """
         user = User.objects.filter(pk=request.user.id).first()
         if not user:
             return cr.error("User not found!")
