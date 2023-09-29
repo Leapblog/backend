@@ -58,13 +58,14 @@ Then finally install all the dependencies using this command.
 ```bash
   poetry install
 ```
+
 **Environment File Setup**
 
 Rename the `.env.example` file to `.env` to setup the environment file.
 
 **Setup Database**
 
-To setup the database, we need docker-compose. You can refer to [this](https://docs.docker.com/compose/install/) to install `docker-compose` on your system.
+To setup the database, we need docker-compose. You can refer to [this](https://docs.docker.com/compose/install/) to install `docker-compose` on your system. If you already have postgres installed on your system, make sure to disable it first before running the command below.
 
 After the installation of docker and docker-compose you can run this command to setup the database
 
@@ -78,11 +79,13 @@ This will start the database up in the background.
 Before starting the project for the first time we need to make migrations and run the migrate command to sync our database with the latest changes.
 
 First, make the migration files using this command:
+
 ```bash
 python manage.py makemigrations
 ```
 
 Then, migrate the database using the migrations files by running this command:
+
 ```bash
 python manage.py migrate
 ```
@@ -93,7 +96,3 @@ After all the initial setup, we're now ready to start the project up. Run this c
 ```bash
 python manage.py runserver
 ```
-
-
-
-

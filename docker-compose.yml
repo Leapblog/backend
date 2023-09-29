@@ -15,4 +15,3 @@ services:
 networks:
   lsp_postgres:
     driver: bridge
-    
