@@ -48,6 +48,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "authentication.middleware.verified_middleware.verified_middleware",
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
@@ -147,7 +148,22 @@ MEDIA_URL = "/media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
+AUTH_USER_MODEL = "authentication.User"
+
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "authentication.authentication.JWTAuthentication",
+    ],
+    "EXCEPTION_HANDLER": "core.exception_handler.custom_exception_handler",
+}
+
 JWT_CONF = {
     "ACCESS_TOKEN_EXPIRY": 5,
     "REFRESH_TOKEN_EXPIRY": 1,
 }
+
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = os.environ.get("EMAIL_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_PASSWORD")

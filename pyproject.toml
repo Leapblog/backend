@@ -12,11 +12,13 @@ django = "^4.2.5"
 djangorestframework = "^3.14.0"
 python-dotenv = "^1.0.0"
 psycopg2-binary = "^2.9.8"
+pyjwt = "^2.8.0"
 
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.9.1"
 pre-commit = "^3.4.0"
+isort = "^5.12.0"
 
 [build-system]
 requires = ["poetry-core"]
