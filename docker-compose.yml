@@ -1,0 +1,17 @@
+version: '3'
+services:
+  lsp_postgres:
+    container_name: lsp_postgres
+    image: postgres:latest
+    ports:
+      - '5432:5432'
+    volumes:
+      - /var/folders/postgres:/data/postgres
+    env_file:
+      - .env
+    networks:
+      - lsp_postgres
+
+networks:
+  lsp_postgres:
+    driver: bridge
