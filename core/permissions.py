@@ -7,6 +7,11 @@ from rest_framework.request import Request
 
 
 class CustomPermissions(DjangoModelPermissions):
+    """
+    Custom permissions class that extends Django's built-in `DjangoModelPermissions` class.
+    This class defines the permissions required for each HTTP method on a model.
+    """
+
     perms_map = {
         "GET": ["%(app_label)s.view_%(model_name)s"],
         "OPTIONS": [],
@@ -19,6 +24,10 @@ class CustomPermissions(DjangoModelPermissions):
 
 
 class IsAuthenticatedAndReadOnly(BasePermission):
+    """
+    Allows read-only access to authenticated users.
+    """
+
     def has_permission(self, request, view):
         return bool(
             request.method in SAFE_METHODS
