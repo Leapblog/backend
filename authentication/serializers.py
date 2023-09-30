@@ -21,6 +21,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         model = User
         fields = ("email", "username", "password", "confirm_password", "type")
 
+    def validate_type(self, value: str) -> str:
+        allowed_types = ["user", "lspp"]
+
+        if value not in allowed_types:
+            raise serializers.ValidationError(
+                "Invalid user type. Allowed types are: user, lspp"
+            )
+
+        return value
+
     def create(self, validated_data: dict) -> User:
         """
         Create a new user with the given validated data.

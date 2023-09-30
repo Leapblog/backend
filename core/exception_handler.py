@@ -4,7 +4,7 @@ from rest_framework.views import exception_handler
 from core.response import CustomResponse
 
 
-def handle_other_exceptions(exc, context):
+def handle_other_exceptions(exc: Exception, context):
     """
     Handle all other exceptions that Django Rest Framework (DRF) does not handle.
 
