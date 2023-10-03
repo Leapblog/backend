@@ -14,3 +14,4 @@ RUN poetry config virtualenvs.create false \
     && poetry install --only main --no-interaction --no-ansi
 
 COPY . /api/
+ENTRYPOINT [ "sh", "entrypoint.sh" ]
