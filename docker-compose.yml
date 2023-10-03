@@ -4,14 +4,14 @@ services:
     container_name: lsp_postgres
     image: postgres:latest
     ports:
-      - '5432:5432'
+      - '5433:5433'
     volumes:
       - pgdata:/var/lib/postgresql/data
     env_file:
       - .env
-  
+
   api:
-    build: 
+    build:
       context: .
     ports:
       - "8000:8000"
@@ -23,4 +23,3 @@ services:
 
 volumes:
   pgdata:
-
