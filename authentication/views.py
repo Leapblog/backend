@@ -1,21 +1,22 @@
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
-from rest_framework.views import APIView
 from rest_framework.request import Request
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.views import APIView
 
-from authentication.models import BlackListedToken, User as BaseUser
+from authentication.models import BlackListedToken, Profile
 from authentication.serializers import (
     LoginSerializer,
     OtpSerializer,
+    ProfileSerializer,
     RefreshTokenSerializer,
     RegisterSerializer,
-    UserSerializer,
 )
 from authentication.utils import generate_otp, send_otp_email
 from core.response import CustomResponse as cr
+
 from .authentication import JWTAuthentication as jwt_auth
 
 User = get_user_model()
@@ -176,16 +177,45 @@ class RefreshTokenView(APIView):
 
 class ProfileView(APIView):
     permission_classes = [IsAuthenticated]
-    serializer_class = UserSerializer
+    serializer_class = ProfileSerializer
 
     def get(self, request: Request) -> Response:
-        user = BaseUser.objects.filter(pk=request.user.id).first()
-        serializer = self.serializer_class(instance=user)
-        if not user:
+        """
+        Get the profile associated with the authenticated user.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object containing the new access token.
+        """
+        if not request.user:
             return cr.error(
                 message="User not found!", status_code=status.HTTP_403_FORBIDDEN
             )
+        profile = Profile.objects.filter(user=request.user).first()
+        serializer = self.serializer_class(instance=profile)
         return cr.success(data=serializer.data, message="Profile fetched successfully!")
+
+    def post(self, request: Request) -> Response:
+        """
+        Create a profile for the authenticated user.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object containing the new access token.
+        """
+        data = request.data.copy()
+        data["user_id"] = request.user.id
+
+        serializer = self.serializer_class(data=data)
+        serializer.is_valid(raise_exception=True)
+
+        profile_instance = Profile(user=request.user, **serializer.validated_data)
+        profile_instance.save()
+        return cr.success(data=serializer.data, message="Profile created successfully.")
 
 
 class LogoutView(APIView):

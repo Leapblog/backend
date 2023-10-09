@@ -1,7 +1,7 @@
 from django.contrib.auth.hashers import make_password
 from rest_framework import serializers
 
-from authentication.models import User
+from authentication.models import Profile, User
 
 
 class LoginSerializer(serializers.Serializer):
@@ -45,6 +45,16 @@ class RegisterSerializer(serializers.ModelSerializer):
         validated_data["password"] = make_password(password)
         user = super(RegisterSerializer, self).create(validated_data)
         return user
+
+
+class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source="user.username")
+    first_name = serializers.CharField(source="user.first_name")
+    last_name = serializers.CharField(source="user.last_name")
+
+    class Meta:
+        model = Profile
+        fields = "__all__"
 
 
 class UserSerializer(serializers.ModelSerializer):

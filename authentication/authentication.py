@@ -8,7 +8,8 @@ from django.http import HttpRequest
 from rest_framework import authentication
 from rest_framework.exceptions import AuthenticationFailed, ParseError
 
-from authentication.models import BlackListedToken, User as BaseUser
+from authentication.models import BlackListedToken
+from authentication.models import User as BaseUser
 
 User = get_user_model()
 

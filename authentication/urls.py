@@ -3,11 +3,11 @@ from django.urls import path
 from authentication.views import (
     LoginView,
     LogoutView,
-    RegisterView,
-    RefreshTokenView,
     ProfileView,
-    VerifyOtpView,
+    RefreshTokenView,
+    RegisterView,
     ResendOtpView,
+    VerifyOtpView,
 )
 
 urlpatterns = [
