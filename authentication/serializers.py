@@ -56,6 +56,24 @@ class ProfileSerializer(serializers.ModelSerializer):
         model = Profile
         fields = "__all__"
 
+    # Override for user fields (writable dotted)
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop("user", {})
+        user = instance.user
+        user_fields = ["first_name", "last_name", "username"]
+        for field in user_fields:
+            if field in user_data:
+                setattr(user, field, user_data[field])
+
+        user.save()
+
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+
+        instance.save()
+        return instance
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:

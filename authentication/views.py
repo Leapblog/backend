@@ -189,17 +189,13 @@ class ProfileView(APIView):
         Returns:
             Response: The HTTP response object containing the new access token.
         """
-        if not request.user:
-            return cr.error(
-                message="User not found!", status_code=status.HTTP_403_FORBIDDEN
-            )
         profile = Profile.objects.filter(user=request.user).first()
         serializer = self.serializer_class(instance=profile)
         return cr.success(data=serializer.data, message="Profile fetched successfully!")
 
-    def post(self, request: Request) -> Response:
+    def put(self, request: Request) -> Response:
         """
-        Create a profile for the authenticated user.
+        Create and update a profile for the authenticated user.
 
         Args:
             request (Request): The HTTP request object.
@@ -207,14 +203,12 @@ class ProfileView(APIView):
         Returns:
             Response: The HTTP response object containing the new access token.
         """
-        data = request.data.copy()
-        data["user_id"] = request.user.id
-
-        serializer = self.serializer_class(data=data)
-        serializer.is_valid(raise_exception=True)
-
-        profile_instance = Profile(user=request.user, **serializer.validated_data)
-        profile_instance.save()
+        profile = Profile.objects.filter(user=request.user).first()
+        serializer = self.serializer_class(
+            instance=profile, data=request.data, partial=True
+        )
+        if serializer.is_valid():
+            serializer.save()
         return cr.success(data=serializer.data, message="Profile created successfully.")
 
 
