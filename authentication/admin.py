@@ -2,7 +2,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 
-from .models import BlackListedToken, User, Profile
+from .models import BlackListedToken, Profile, User
 
 
 class CustomUserAdmin(UserAdmin):
