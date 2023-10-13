@@ -1,9 +1,8 @@
-from django.contrib import admin
-
 # Register your models here.
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import User, BlackListedToken
+
+from .models import BlackListedToken, User, Profile
 
 
 class CustomUserAdmin(UserAdmin):
@@ -50,3 +49,4 @@ class CustomUserAdmin(UserAdmin):
 
 admin.site.register(User, CustomUserAdmin)
 admin.site.register(BlackListedToken)
+admin.site.register(Profile)
