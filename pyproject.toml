@@ -2,7 +2,7 @@
 name = "backend"
 version = "0.1.0"
 description = "A backend for our project in LSPP Product Launch"
-authors = ["Nishant Sapkota <snishant306@gmail.com>"]
+authors = ["Nishant Sapkota <snishant306@gmail.com>", "Aditi Kharel <aditikharel246@gmail.com>", "Anupama Rai <anuraie1@gmail.com>"]
 license = "MIT"
 readme = "README.md"
 
