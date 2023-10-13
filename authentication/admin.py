@@ -1,6 +1,51 @@
+# Register your models here.
 from django.contrib import admin
 from django.utils.html import format_html
-from .models import User, BlackListedToken, Profile
+from django.contrib.auth.admin import UserAdmin
+
+from .models import BlackListedToken, Profile, User
+
+
+class CustomUserAdmin(UserAdmin):
+    list_display = ("username", "email", "first_name", "last_name", "is_staff", "type")
+    fieldsets = (
+        (None, {"fields": ("username", "password")}),
+        (
+            "Personal Info",
+            {"fields": ("email", "first_name", "last_name", "type", "otp")},
+        ),
+        (
+            "Permissions",
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "groups",
+                    "user_permissions",
+                )
+            },
+        ),
+        ("Important dates", {"fields": ("last_login", "date_joined")}),
+    )
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": (
+                    "username",
+                    "email",
+                    "password1",
+                    "password2",
+                    "is_staff",
+                    "is_active",
+                ),
+            },
+        ),
+    )
+    search_fields = ("username", "email", "first_name", "last_name")
+    ordering = ("username",)
 
 
 class ProfileAdmin(admin.ModelAdmin):
@@ -48,24 +93,6 @@ class ProfileAdmin(admin.ModelAdmin):
     linkedin_link.short_description = "LinkedIn"
 
 
-class BlackListedTokenAdmin(admin.ModelAdmin):
-    list_display = ("token",)
-
-
-class UserAdmin(admin.ModelAdmin):
-    list_display = ("username", "email", "first_name", "last_name", "type", "otp")
-    search_fields = ("username", "email")
-    list_filter = ("type",)
-    fieldsets = (
-        (
-            "Personal Information",
-            {"fields": ("username", "email", ("first_name", "last_name"), "password")},
-        ),
-        ("Permissions", {"fields": ("is_active", "is_staff", "is_superuser", "type")}),
-        ("OTP", {"fields": ("otp",)}),
-    )
-
-
-admin.site.register(User, UserAdmin)
-admin.site.register(BlackListedToken, BlackListedTokenAdmin)
+admin.site.register(User, CustomUserAdmin)
+admin.site.register(BlackListedToken)
 admin.site.register(Profile, ProfileAdmin)
