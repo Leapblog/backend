@@ -1,7 +1,5 @@
-<h1 align="center">Leapblog - Backend</h1>
-
 <div align="center">
-  <img src="https://cdn.snishant.com.np/r/leapblog.png" alt="Leapblog Logo" width="400">
+  <img src="https://cdn.snishant.com.np/r/leapblog.png" alt="Leapblog Logo" width="600">
 </div>
 
 ---
