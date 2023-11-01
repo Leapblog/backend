@@ -1,7 +1,5 @@
-<h1 align="center">Leapfrog Product Launch - Backend</h1>
-
 <div align="center">
-  <img src="https://studentpartner.lftechnology.com/assets/images/student-partnership-logo.svg" alt="Leapfrog Student Partnership Logo" width="400">
+  <img src="https://cdn.snishant.com.np/r/leapblog.png" alt="Leapblog Logo" width="600">
 </div>
 
 ---
