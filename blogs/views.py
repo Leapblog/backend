@@ -209,34 +209,11 @@ class ReadCommentView(APIView):
         serializer = self.serializer_class(comment)
         return cr.success(data=serializer.data, message="Comment fetched successfully!")
 
-
-# class LikeCreateView(APIView):
-
-#     permission_classes = [IsAuthenticated]
-
-#     def post(self, request: Request, post_id) -> Response:
-
-#         user = request.user
-#         post = Likes.objects.filter(post_id=post_id, user=user).filter()
-#         current_likes = post.user.count()
-#         if not post:
-#             post.user.add()
-
-
-#         existing_like = Likes.objects.filter(post_id=post_id, user=request.user).first()
-#         post = existing_like.post
-#         user = existing_like.user
-#         if not existing_like:
-#             serializer.save(user = user, post = post)
-#             return cr.success(data=serializer.data, message="Succefully liked a post.")
-
-
 class LikeCreateView(APIView):
 
     permission_classes = [IsAuthenticated]
 
     def post(self, request, post_id):
-
         post = Posts.objects.filter(post_id=post_id).first()
         user = request.user
 
@@ -244,13 +221,11 @@ class LikeCreateView(APIView):
             return cr.error(message="Post not found.")
 
         like_exists = Likes.objects.filter(user=user, post=post).exists()
-
         if like_exists:
             return cr.success(message='You have already liked this post.')
 
         like = Likes(user=user, post=post)
         like.save()
-
         return cr.success(message='Post liked successfully.')
 
     def delete(self, request, post_id):
@@ -261,10 +236,8 @@ class LikeCreateView(APIView):
             return cr.error(message="Post not found.")
 
         like = Likes.objects.filter(user=user, post=post).first()
-
         if not like:
             return cr.success(message='You have not liked this post.')
 
         like.delete()
-
         return cr.success(message='Like removed successfully.')
