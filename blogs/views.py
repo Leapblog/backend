@@ -11,7 +11,7 @@ from blogs.serializers import (
     CreatePostSerializer,
     LikeSerializer,
     PostSerializer
-    )
+)
 from core.response import CustomResponse as cr
 
 from .models import Comments, Likes, Posts
@@ -37,13 +37,11 @@ class GetBlogView(APIView):
 
 
 class CreateBlogView(APIView):
-
     permission_classes=[IsAuthenticated]
 
     serializer_class = CreatePostSerializer
 
     def post(self, request: Request) -> Response:
-
         """
         Post a new blog.
 
@@ -57,9 +55,9 @@ class CreateBlogView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        serializer.save(user = request.user)
+        serializer.save(user=request.user)
 
-        return cr.success(data = serializer.data, message= "New blog added successfully!")
+        return cr.success(data=serializer.data, message="New blog added successfully!")
 
     def put(self, request: Request, post_id) -> Response:
         """
@@ -79,12 +77,11 @@ class CreateBlogView(APIView):
         serializer = self.serializer_class(post, data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        save = serializer.save(user = request.user)
+        save = serializer.save(user=request.user)
 
-        return cr.success(data = serializer.data, message= "Post updated successfully!")
+        return cr.success(data=serializer.data, message="Post updated successfully!")
 
     def delete(self, request: Request, post_id) -> Response:
-
         """
         Delete the posts.
 
@@ -97,15 +94,13 @@ class CreateBlogView(APIView):
 
         post = Posts.objects.filter(post_id=post_id, user=request.user).first()
         if not post:
-
-                return cr.error(message="Post not found.")
+            return cr.error(message="Post not found.")
 
         post.delete()
         return cr.success(message="Post deleted successfully.")
 
 
 class CreateCommentView(APIView):
-
     permission_classes = [IsAuthenticated]
 
     serializer_class = CommentSerializer
@@ -124,14 +119,13 @@ class CreateCommentView(APIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
 
-        serializer.save(user = request.user)
+        serializer.save(user=request.user)
 
         return cr.success(
-            data = serializer.data, message= "New comment added successfully!"
+            data=serializer.data, message="New comment added successfully!"
             )
 
     def delete(self, request: Request, id) -> Response:
-
         """
         Delete the comments.
 
@@ -144,14 +138,13 @@ class CreateCommentView(APIView):
 
         comment = Comments.objects.filter(id=id, user=request.user).first()
         if not comment:
-                return cr.error(message="Comment not found.")
+            return cr.error(message="Comment not found.")
 
         comment.delete()
         return cr.success(message="Comment deleted successfully.")
 
 
 class EditCommentView(APIView):
-
     permission_classes = [IsAuthenticated]
 
     serializer_class = CommentEditSerializer
@@ -176,7 +169,7 @@ class EditCommentView(APIView):
 
         serializer.save()
 
-        return cr.success(data = serializer.data, message= "Comment updated successfully!")
+        return cr.success(data=serializer.data, message="Comment updated successfully!")
 
 class ReadPostView(APIView):
     serializer_class = PostSerializer
@@ -192,7 +185,7 @@ class ReadPostView(APIView):
             Response: The HTTP response object.
         """
 
-        posts = Posts.objects.filter(post_id = post_id).first()
+        posts = Posts.objects.filter(post_id=post_id).first()
         if not posts:
             return cr.error(message="Post not found.")
         serializer = self.serializer_class(posts)
@@ -213,14 +206,14 @@ class ReadCommentView(APIView):
             Response: The HTTP response object.
         """
 
-        comment = Comments.objects.filter(id = id).first()
+        comment = Comments.objects.filter(id=id).first()
         if not comment:
             return cr.error(message="Comment not found.")
         serializer = self.serializer_class(comment)
         return cr.success(data=serializer.data, message="Comment fetched successfully!")
 
-class LikeCreateView(APIView):
 
+class LikeCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, post_id):
