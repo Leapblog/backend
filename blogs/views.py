@@ -222,11 +222,11 @@ class LikeCreateView(APIView):
 
         like_exists = Likes.objects.filter(user=user, post=post).exists()
         if like_exists:
-            return cr.success(message='You have already liked this post.')
+            return cr.success(message="You have already liked this post.")
 
         like = Likes(user=user, post=post)
         like.save()
-        return cr.success(message='Post liked successfully.')
+        return cr.success(message="Post liked successfully.")
 
     def delete(self, request, post_id):
         post = Posts.objects.filter(post_id=post_id).first()
@@ -237,7 +237,7 @@ class LikeCreateView(APIView):
 
         like = Likes.objects.filter(user=user, post=post).first()
         if not like:
-            return cr.success(message='You have not liked this post.')
+            return cr.success(message="You have not liked this post.")
 
         like.delete()
-        return cr.success(message='Like removed successfully.')
+        return cr.success(message="Like removed successfully.")
