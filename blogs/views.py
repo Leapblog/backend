@@ -10,7 +10,7 @@ from blogs.serializers import (
     CommentSerializer,
     CreatePostSerializer,
     LikeSerializer,
-    PostSerializer
+    PostSerializer,
 )
 from core.response import CustomResponse as cr
 
@@ -37,7 +37,7 @@ class GetBlogView(APIView):
 
 
 class CreateBlogView(APIView):
-    permission_classes=[IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     serializer_class = CreatePostSerializer
 
@@ -123,7 +123,7 @@ class CreateCommentView(APIView):
 
         return cr.success(
             data=serializer.data, message="New comment added successfully!"
-            )
+        )
 
     def delete(self, request: Request, id) -> Response:
         """
@@ -170,6 +170,7 @@ class EditCommentView(APIView):
         serializer.save()
 
         return cr.success(data=serializer.data, message="Comment updated successfully!")
+
 
 class ReadPostView(APIView):
     serializer_class = PostSerializer

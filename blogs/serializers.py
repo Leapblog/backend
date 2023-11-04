@@ -11,7 +11,7 @@ class LikeSerializer(serializers.ModelSerializer):
         model = Likes
         fields = "__all__"
 
-        read_only_fields = ["user","post"]
+        read_only_fields = ["user", "post"]
 
 
 class CommentSerializer(serializers.ModelSerializer):
@@ -27,7 +27,7 @@ class CommentEditSerializer(serializers.ModelSerializer):
         model = Comments
         fields = "__all__"
 
-        read_only_fields = ["user","post"]
+        read_only_fields = ["user", "post"]
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -46,12 +46,12 @@ class PostSerializer(serializers.ModelSerializer):
              "updated_at",
              "comment_post",
              "like_post",
-         )
+        )
 
 
 class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Posts
-        fields = ("user","title","content")
+        fields = ("user", "title", "content")
 
         read_only_fields = ["user"]

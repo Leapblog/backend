@@ -7,7 +7,7 @@ from blogs.views import (
     GetBlogView,
     LikeCreateView,
     ReadCommentView,
-    ReadPostView
+    ReadPostView,
 )
 
 urlpatterns = [

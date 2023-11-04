@@ -14,7 +14,7 @@ class Posts(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='post'
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="post"
     ) #reference from Users
 
     def __str__(self):
@@ -23,10 +23,10 @@ class Posts(models.Model):
 
 class Comments(models.Model):
     post = models.ForeignKey(
-        Posts, on_delete= models.CASCADE,related_name='comment_post'
+        Posts, on_delete= models.CASCADE,related_name="comment_post"
     ) #reference from Posts
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name='comment_user'
+        settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name="comment_user"
     ) #reference from Users
     c_content = models.TextField()
     created_at = models.DateTimeField(auto_now=True)
@@ -37,9 +37,9 @@ class Comments(models.Model):
 
 class Likes(models.Model):
     post = models.ForeignKey(
-        Posts, on_delete= models.CASCADE, related_name='like_post'
+        Posts, on_delete= models.CASCADE, related_name="like_post"
     ) #refrence from Posts
     user = models.ForeignKey(
-        settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name='like_user'
+        settings.AUTH_USER_MODEL, on_delete= models.CASCADE, related_name="like_user"
     ) #reference from Users
     created_at = models.DateTimeField(auto_now=True)
