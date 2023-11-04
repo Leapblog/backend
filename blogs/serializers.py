@@ -9,20 +9,20 @@ from .models import *
 class LikeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Likes
-        fields = '__all__'
-        read_only_fields = ['user','post']
+        fields = "__all__"
+        read_only_fields = ["user","post"]
 
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
-        fields = '__all__'
-        read_only_fields = ['user']
+        fields = "__all__"
+        read_only_fields = ["user"]
 
 class CommentEditSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comments
-        fields = '__all__'
-        read_only_fields = ['user','post']
+        fields = "__all__"
+        read_only_fields = ["user","post"]
 
 class PostSerializer(serializers.ModelSerializer):
     comment_post = CommentSerializer(many=True)
@@ -30,10 +30,19 @@ class PostSerializer(serializers.ModelSerializer):
     user = serializers.CharField()
     class Meta:
         model = Posts
-        fields = ('user','post_id','title','content','created_at','updated_at','comment_post','like_post')
+        fields = (
+             "user",
+             "post_id",
+             "title",
+             "content",
+             "created_at",
+             "updated_at",
+             "comment_post",
+             "like_post",
+         )
 
 class CreatePostSerializer(serializers.ModelSerializer):
     class Meta:
         model = Posts
-        fields = ('user','title','content')
-        read_only_fields = ['user']
+        fields = ("user","title","content")
+        read_only_fields = ["user"]

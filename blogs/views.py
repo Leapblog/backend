@@ -5,9 +5,13 @@ from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from blogs.serializers import (CommentEditSerializer, CommentSerializer,
-                               CreatePostSerializer, LikeSerializer,
-                               PostSerializer)
+from blogs.serializers import (
+    CommentEditSerializer,
+    CommentSerializer,
+    CreatePostSerializer,
+    LikeSerializer,
+    PostSerializer
+    )
 from core.response import CustomResponse as cr
 
 from .models import Comments, Likes, Posts
@@ -18,14 +22,14 @@ class GetBlogView(APIView):
 
     def get(self, request: Request) -> Response:
         """
-            Get the information about a blog post.
+        Get the information about a blog post.
 
-            Args:
-                request (Request): The HTTP request object.
+        Args:
+            request (Request): The HTTP request object.
 
-            Returns:
-                Response: The HTTP response object.
-            """
+        Returns:
+            Response: The HTTP response object.
+        """
 
         posts = Posts.objects.all()
         serializer = self.serializer_class(posts, many=True)
@@ -33,6 +37,7 @@ class GetBlogView(APIView):
 
 
 class CreateBlogView(APIView):
+
     permission_classes=[IsAuthenticated]
 
     serializer_class = CreatePostSerializer
@@ -40,17 +45,18 @@ class CreateBlogView(APIView):
     def post(self, request: Request) -> Response:
 
         """
-            Post a new blog.
+        Post a new blog.
 
-            Args:
-                request (Request): The HTTP request object.
+        Args:
+            request (Request): The HTTP request object.
 
-            Returns:
-                Response: The HTTP response object.
-            """
+        Returns:
+            Response: The HTTP response object.
+        """
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         serializer.save(user = request.user)
 
         return cr.success(data = serializer.data, message= "New blog added successfully!")
@@ -72,6 +78,7 @@ class CreateBlogView(APIView):
 
         serializer = self.serializer_class(post, data=request.data)
         serializer.is_valid(raise_exception=True)
+
         save = serializer.save(user = request.user)
 
         return cr.success(data = serializer.data, message= "Post updated successfully!")
@@ -79,17 +86,18 @@ class CreateBlogView(APIView):
     def delete(self, request: Request, post_id) -> Response:
 
         """
-            Delete the posts.
+        Delete the posts.
 
-            Args:
-                request (Request): The HTTP request object.
+        Args:
+            request (Request): The HTTP request object.
 
-            Returns:
-                Response: The HTTP response object.
+        Returns:
+            Response: The HTTP response object.
         """
 
         post = Posts.objects.filter(post_id=post_id, user=request.user).first()
         if not post:
+
                 return cr.error(message="Post not found.")
 
         post.delete()
@@ -104,31 +112,34 @@ class CreateCommentView(APIView):
 
     def post(self, request: Request) -> Response:
         """
-                Post a new comment in a post.
+        Post a new comment in a post.
 
-                Args:
-                    request (Request): The HTTP request object.
+        Args:
+            request (Request): The HTTP request object.
 
-                Returns:
-                    Response: The HTTP response object.
+        Returns:
+                Response: The HTTP response object.
         """
 
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
+
         serializer.save(user = request.user)
 
-        return cr.success(data = serializer.data, message= "New comment added successfully!")
+        return cr.success(
+            data = serializer.data, message= "New comment added successfully!"
+            )
 
     def delete(self, request: Request, id) -> Response:
 
         """
-            Delete the comments.
+        Delete the comments.
 
-            Args:
-                request (Request): The HTTP request object.
+        Args:
+            request (Request): The HTTP request object.
 
-            Returns:
-                Response: The HTTP response object.
+        Returns:
+            Response: The HTTP response object.
         """
 
         comment = Comments.objects.filter(id=id, user=request.user).first()
@@ -162,24 +173,24 @@ class EditCommentView(APIView):
 
         serializer = self.serializer_class(comment, data=request.data)
         serializer.is_valid(raise_exception=True)
+
         serializer.save()
 
         return cr.success(data = serializer.data, message= "Comment updated successfully!")
 
 class ReadPostView(APIView):
-
     serializer_class = PostSerializer
 
     def get(self, request: Request, post_id) -> Response:
         """
-            Get the information about a blog post.
+        Get the information about a blog post.
 
-            Args:
-                request (Request): The HTTP request object.
+        Args:
+            request (Request): The HTTP request object.
 
-            Returns:
-                Response: The HTTP response object.
-            """
+        Returns:
+            Response: The HTTP response object.
+        """
 
         posts = Posts.objects.filter(post_id = post_id).first()
         if not posts:
@@ -189,19 +200,18 @@ class ReadPostView(APIView):
 
 
 class ReadCommentView(APIView):
-
     serializer_class = CommentSerializer
 
     def get(self, request: Request, id) -> Response:
         """
-            Get the information about a blog post.
+        Get the information about a blog post.
 
-            Args:
-                request (Request): The HTTP request object.
+        Args:
+            request (Request): The HTTP request object.
 
-            Returns:
-                Response: The HTTP response object.
-            """
+        Returns:
+            Response: The HTTP response object.
+        """
 
         comment = Comments.objects.filter(id = id).first()
         if not comment:
@@ -214,6 +224,15 @@ class LikeCreateView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, post_id):
+        """
+        Likes the blog post if not liked.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object.
+        """
         post = Posts.objects.filter(post_id=post_id).first()
         user = request.user
 
@@ -229,6 +248,15 @@ class LikeCreateView(APIView):
         return cr.success(message="Post liked successfully.")
 
     def delete(self, request, post_id):
+        """
+        Unlike the blog post if liked.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object.
+        """
         post = Posts.objects.filter(post_id=post_id).first()
         user = request.user
 
