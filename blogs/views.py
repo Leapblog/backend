@@ -19,7 +19,7 @@ from .models import Comments, Likes, Posts
 class GetBlogView(APIView):
     serializer_class = PostSerializer
 
-    def get(self, request: Request, post_id = None) -> Response:
+    def get(self, request: Request, post_id=None) -> Response:
         """
         Get the information about a blog post.
 
@@ -32,7 +32,9 @@ class GetBlogView(APIView):
         if post_id is None:
             posts = Posts.objects.all()
             serializer = self.serializer_class(posts, many=True)
-            return cr.success(data=serializer.data, message="Blogs fetched successfully!")
+            return cr.success(
+                data=serializer.data, message="Blogs fetched successfully!"
+                )
 
         posts = Posts.objects.filter(post_id=post_id).first()
         if not posts:
