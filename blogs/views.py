@@ -1,4 +1,3 @@
-from django.http import JsonResponse
 from django.shortcuts import render
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
@@ -34,6 +33,23 @@ class GetBlogView(APIView):
         posts = Posts.objects.all()
         serializer = self.serializer_class(posts, many=True)
         return cr.success(data=serializer.data, message="Blogs fetched successfully!")
+
+    def get(self, request: Request, post_id) -> Response:
+        """
+        Get the information about a blog post.
+
+        Args:
+            request (Request): The HTTP request object.
+
+        Returns:
+            Response: The HTTP response object.
+        """
+
+        posts = Posts.objects.filter(post_id=post_id).first()
+        if not posts:
+            return cr.error(message="Post not found.")
+        serializer = self.serializer_class(posts)
+        return cr.success(data=serializer.data, message="Blog fetched successfully!")
 
 
 class CreateBlogView(APIView):
@@ -172,27 +188,6 @@ class EditCommentView(APIView):
         return cr.success(data=serializer.data, message="Comment updated successfully!")
 
 
-class ReadPostView(APIView):
-    serializer_class = PostSerializer
-
-    def get(self, request: Request, post_id) -> Response:
-        """
-        Get the information about a blog post.
-
-        Args:
-            request (Request): The HTTP request object.
-
-        Returns:
-            Response: The HTTP response object.
-        """
-
-        posts = Posts.objects.filter(post_id=post_id).first()
-        if not posts:
-            return cr.error(message="Post not found.")
-        serializer = self.serializer_class(posts)
-        return cr.success(data=serializer.data, message="Blog fetched successfully!")
-
-
 class ReadCommentView(APIView):
     serializer_class = CommentSerializer
 
@@ -214,7 +209,7 @@ class ReadCommentView(APIView):
         return cr.success(data=serializer.data, message="Comment fetched successfully!")
 
 
-class LikeCreateView(APIView):
+class LikeView(APIView):
     permission_classes = [IsAuthenticated]
 
     def post(self, request, post_id):
