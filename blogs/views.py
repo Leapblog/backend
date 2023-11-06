@@ -34,7 +34,7 @@ class GetBlogView(APIView):
             serializer = self.serializer_class(posts, many=True)
             return cr.success(
                 data=serializer.data, message="Blogs fetched successfully!"
-                )
+            )
 
         posts = Posts.objects.filter(post_id=post_id).first()
         if not posts:
