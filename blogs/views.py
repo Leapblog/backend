@@ -19,7 +19,7 @@ from .models import Comments, Likes, Posts
 class GetBlogView(APIView):
     serializer_class = PostSerializer
 
-    def get(self, request: Request) -> Response:
+    def get(self, request: Request, post_id = None) -> Response:
         """
         Get the information about a blog post.
 
@@ -29,21 +29,10 @@ class GetBlogView(APIView):
         Returns:
             Response: The HTTP response object.
         """
-
-        posts = Posts.objects.all()
-        serializer = self.serializer_class(posts, many=True)
-        return cr.success(data=serializer.data, message="Blogs fetched successfully!")
-
-    def get(self, request: Request, post_id) -> Response:
-        """
-        Get the information about a blog post.
-
-        Args:
-            request (Request): The HTTP request object.
-
-        Returns:
-            Response: The HTTP response object.
-        """
+        if post_id is None:
+            posts = Posts.objects.all()
+            serializer = self.serializer_class(posts, many=True)
+            return cr.success(data=serializer.data, message="Blogs fetched successfully!")
 
         posts = Posts.objects.filter(post_id=post_id).first()
         if not posts:
@@ -212,7 +201,7 @@ class ReadCommentView(APIView):
 class LikeView(APIView):
     permission_classes = [IsAuthenticated]
 
-    def post(self, request, post_id):
+    def put(self, request, post_id):
         """
         Likes the blog post if not liked.
 
@@ -230,31 +219,11 @@ class LikeView(APIView):
 
         like_exists = Likes.objects.filter(user=user, post=post).exists()
         if like_exists:
-            return cr.success(message="You have already liked this post.")
+            like = Likes.objects.filter(user=user, post=post).first()
+            like.delete()
+            return cr.success(message="Like removed successfully.")
 
-        like = Likes(user=user, post=post)
-        like.save()
-        return cr.success(message="Post liked successfully.")
-
-    def delete(self, request, post_id):
-        """
-        Unlike the blog post if liked.
-
-        Args:
-            request (Request): The HTTP request object.
-
-        Returns:
-            Response: The HTTP response object.
-        """
-        post = Posts.objects.filter(post_id=post_id).first()
-        user = request.user
-
-        if not post:
-            return cr.error(message="Post not found.")
-
-        like = Likes.objects.filter(user=user, post=post).first()
-        if not like:
-            return cr.success(message="You have not liked this post.")
-
-        like.delete()
-        return cr.success(message="Like removed successfully.")
+        else:
+            like = Likes(user=user, post=post)
+            like.save()
+            return cr.success(message="Post liked successfully.")

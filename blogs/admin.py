@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import *
+from .models import Posts, Comments, Likes
 
 # Register your models here.
 admin.site.register(Posts)
